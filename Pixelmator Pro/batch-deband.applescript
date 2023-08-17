@@ -3,6 +3,8 @@ tell application "Pixelmator Pro"
 	-- and save references to all those images in the originalImages variable
 	set originalImages to choose file with prompt Â
 		"Please select the images to process:" with multiple selections allowed
+	set exportLocation to choose folder with prompt Â
+		"Please select where you'd like export the images:"
 	-- Start a repeat loop that loops over each image
 	repeat with a from 1 to number of originalImages
 		-- Open the current image in the loop
@@ -10,7 +12,8 @@ tell application "Pixelmator Pro"
 		-- Apply the deband adjustments
 		deband currentImage
 		-- Close and save the image
-		close currentImage with saving
+		export currentImage to ((exportLocation as text) & name of currentImage & ".jpg") as JPEG with properties {compression factor:100}
+		close currentImage without saving
 	end repeat
 	display notification (number of originalImages as text) & Â
 		" images have been successfully edited." with title "Batch Deband"
